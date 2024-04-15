@@ -1,0 +1,87 @@
+[gd_scene load_steps=3 format=3 uid="uid://bsvrxxiyf6m8d"]
+
+[ext_resource type="AudioStream" uid="uid://vmvjaf35fx0t" path="res://addons/Work-Clock/528111__fspera__phone-ringing-sound.ogg" id="1_uemw2"]
+
+[sub_resource type="GDScript" id="GDScript_rjdl5"]
+resource_name = "Clock"
+script/source = "@tool
+extends Control
+@onready var time_label: Label = %TimeLabel
+@onready var time_bar: ProgressBar = $VBoxContainer/TimeBar
+@onready var audio_stream_player: AudioStreamPlayer = $AudioStreamPlayer
+var total : float = 8.0
+var wage : float = 10.0 #wage
+var is_overtime:bool = false
+func _ready() -> void: 
+	theme = get_window().theme
+	$VBoxContainer/SpinBox.value = total
+func _process(delta: float) -> void:
+	var t = (get_hours())
+	time_label.text = ' %.3f total Hours ' % [t]
+	time_bar.value = (t / total) * 100.0
+	modulate = lerp(Color.GREEN,Color.RED,(t / total))
+	if t >= total and not is_overtime:
+		audio_stream_player.play()
+		is_overtime = true
+		#time_bar.modulate = 
+func get_seconds() -> float:
+	return (Time.get_ticks_msec()/1000.0)
+func get_minutes() -> float:
+	return (get_seconds()/60.0)
+func get_hours() -> float:
+	return (get_minutes()/60.0)
+func hours_to_miliseconds(h:float) -> float:
+	return (h * 60.0 * 60.0 * 1000.0)
+
+
+func _on_spin_box_value_changed(value: float) -> void:
+	total = value
+	pass # Replace with function body.
+"
+
+[node name="Work Clock" type="PanelContainer"]
+modulate = Color(0.0535028, 0.946497, 0, 1)
+anchors_preset = 14
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_top = -51.0
+grow_horizontal = 2
+grow_vertical = 2
+script = SubResource("GDScript_rjdl5")
+
+[node name="VBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 2
+size_flags_vertical = 4
+
+[node name="TimeBar" type="ProgressBar" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+value = 5.35
+show_percentage = false
+
+[node name="TimeLabel" type="Label" parent="VBoxContainer/TimeBar"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_vertical = 3
+text = " 0.428 total Hours "
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="SpinBox" type="SpinBox" parent="VBoxContainer"]
+layout_mode = 2
+min_value = 1.0
+max_value = 10000.0
+value = 8.0
+suffix = "Max"
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("1_uemw2")
+
+[connection signal="value_changed" from="VBoxContainer/SpinBox" to="." method="_on_spin_box_value_changed"]
