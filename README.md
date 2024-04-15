@@ -1,3 +1,4 @@
 # Godot-Work-Clock
-A small widget that tracks how much time godot has been open for.
-Usefull to track how much time you have been working for.
+A small widget for the instpector that tracks how many hours godot has been open for.
+Its usefull for tracking how much time you spent working.
+![image](https://github.com/emanvidmaker/Work-Clock/assets/16447282/55893635-1ae5-45ef-9823-2267d7ab0d90)
