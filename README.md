@@ -1,3 +1,4 @@
+![Godot-WORK-CLOCK incon](https://github.com/emanvidmaker/Godot-Work-Clock/assets/16447282/37758e8d-a169-414d-aea9-4635e5443f7e)
 # Godot-Work-Clock
 A small editor dock for the instpector that tracks how many hours godot has been open for.
 Its usefull for tracking how much time you spent working.
